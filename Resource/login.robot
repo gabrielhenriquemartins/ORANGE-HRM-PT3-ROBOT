@@ -14,6 +14,14 @@ ${password}            "admin123"
 
 *** Keywords ***
 Login With Authentication
+    [Documentation]    This keywords Login With Authentication
+
+    ...    This keyword login into the application and return the cookies to be reused
+    ...    for further requests.
+    ...    
+    ...    | Login With Authentication   |
+    ...    
+    ...    Author: Gabriel Martins
     Delete All Sessions
     Create Session    alias=ORANGE   url=https://opensource-demo.orangehrmlive.com/
 
@@ -39,6 +47,14 @@ Login With Authentication
     Return From Keyword      ${cookie_header}
 
 Create Dictionary header
+    [Documentation]    This keywords Create a Dictionary header
+
+    ...    This keyword create a header with cookies and content-type to be reused
+    ...    for further requests.
+    ...    
+    ...    | Create Dictionary header   |   set_cookie=cookies   |   content_type  |
+    ...    
+    ...    Author: Gabriel Martins
     [Arguments]   ${set_cookie}   ${content_type}=application/json  
     ${header}     Create Dictionary    Connection=keep-alive    Content-Type=${content_type}    Cookies=${set_cookie}
     Return From Keyword     ${header}
