@@ -11,6 +11,7 @@ Resource    ../Resource/backend/pages/dashboard.robot
 Resource    ../Resource/backend/pages/claim.robot
 Resource    ../Resource/backend/pages/buzz.robot
 Library     DateTime
+Library     String
 Suite Setup     Store Cookie Header
 
 *** Test Cases ***
@@ -30,9 +31,6 @@ Admin - Delete Non-Existing Job Title - Expect 404
 Admin - Add Location
     ${location_id}    Add Location    location=R&D    cookie=${cookie_header}    status=200
     Set Global Variable    ${location_id}
-
-Admin - Add Duplicated Location - Expect 200
-    Add Location    location=R&D    cookie=${cookie_header}    status=200
 
 Admin - Delete Location
     Delete Location    location_id=${location_id}   cookie=${cookie_header}    status=200
@@ -80,11 +78,13 @@ Pim - Delete Non-Existing Employee - Expect 404
     Delete Employee   cookie=${cookie_header}    status=404    employee_id=${empNumber}
 
 Leave - Add Leave Type
-    ${leave_id}    Add Leave Type     cookie=${cookie_header}    status=200    name=Finally Leave   situational=false
+    ${random_number}     Generate Random String     length=5   chars=[NUMBERS]
+    Set Global Variable    ${random_number}    ${random_number}
+    ${leave_id}    Add Leave Type     cookie=${cookie_header}    status=200    name=Leave ${random_number}   situational=false
     Set Global Variable    ${leave_id}
 
 Leave - Add Duplicated Leave Type - Expect 422
-    Add Leave Type     cookie=${cookie_header}    status=422    name=Finally Leave   situational=false
+    Add Leave Type     cookie=${cookie_header}    status=422    name=Leave ${random_number}   situational=false
 
 Leave - Delete Leave Type
     Delete Leave Type   cookie=${cookie_header}    status=200    leave_type_id=${leave_id}

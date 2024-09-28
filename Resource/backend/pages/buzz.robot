@@ -34,6 +34,6 @@ Delete Post
     ...    Author: Gabriel Martins
     [Arguments]    ${post_id}   ${cookie}    ${status}
     ${header}     Create Dictionary header    set_cookie=${cookie}
-    ${body}       Set Variable         {"id": "[${post_id}]"}
+    ${body}       Set Variable         {"id": ${post_id}}
     ${response}   DELETE On Session    alias=ORANGE    url=/web/index.php/api/v2/buzz/shares/${post_id}   data=${body}   headers=${header}   expected_status=${status}
     Log To Console     Post ID Deleted: ${post_id}
