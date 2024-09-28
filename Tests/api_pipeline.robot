@@ -1,15 +1,15 @@
 *** Settings ***
-Resource    ../Resource/login.robot
-Resource    ../Resource/pages/admin.robot
-Resource    ../Resource/pages/pim.robot
-Resource    ../Resource/pages/leave.robot
-Resource    ../Resource/pages/time.robot
-Resource    ../Resource/pages/my_info.robot
-Resource    ../Resource/pages/recruitment.robot
-Resource    ../Resource/pages/performance.robot
-Resource    ../Resource/pages/dashboard.robot
-Resource    ../Resource/pages/claim.robot
-Resource    ../Resource/pages/buzz.robot
+Resource    ../Resource/backend/login.robot
+Resource    ../Resource/backend/pages/admin.robot
+Resource    ../Resource/backend/pages/pim.robot
+Resource    ../Resource/backend/pages/leave.robot
+Resource    ../Resource/backend/pages/time.robot
+Resource    ../Resource/backend/pages/my_info.robot
+Resource    ../Resource/backend/pages/recruitment.robot
+Resource    ../Resource/backend/pages/performance.robot
+Resource    ../Resource/backend/pages/dashboard.robot
+Resource    ../Resource/backend/pages/claim.robot
+Resource    ../Resource/backend/pages/buzz.robot
 Library     DateTime
 Suite Setup     Store Cookie Header
 
