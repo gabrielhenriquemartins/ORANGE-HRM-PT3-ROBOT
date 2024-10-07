@@ -12,9 +12,9 @@ Get First Title
     ...    Author: Gabriel Martins
     [Arguments]   ${cookie}    ${status}
     ${header}     Create Dictionary header    set_cookie=${cookie}
-    ${response}   GET On Session    alias=ORANGE    url=/web/index.php/api/v2/admin/job-titles?limit=0      headers=${header}    expected_status=${status}
+    ${response}   GET On Session    alias=ORANGE    url=/api/v2/admin/job-titles?limit=0      headers=${header}    expected_status=${status}
     IF    '${status}' == '200'
-        ${json_response}             evaluate             json.loads('''${response.content}''')   json
+        ${json_response}         Convert String To Json             ${response.content}
         ${first_row}       Get From List           ${json_response['data']}    0
         ${id}              Get From Dictionary     ${first_row}    id
         ${title}           Get From Dictionary     ${first_row}    title
@@ -34,7 +34,7 @@ Add KPI
     [Arguments]    ${cookie}    ${status}   ${kpi}   ${jobTitleId}    ${minRating}=0   ${maxRating}=100    ${isDefault}=false
     ${kpi_form_data}   Set Variable   {"title": "${kpi}", "jobTitleId": "${jobTitleId}", "minRating": ${minRating}, "maxRating": ${maxRating}, "isDefault": ${isDefault}}
     ${header}     Create Dictionary header    set_cookie=${cookie}
-    ${response}   POST On Session    alias=ORANGE    url=/web/index.php/api/v2/performance/kpis     data=${kpi_form_data}       headers=${header}    expected_status=${status}
+    ${response}   POST On Session    alias=ORANGE    url=/api/v2/performance/kpis     data=${kpi_form_data}       headers=${header}    expected_status=${status}
     IF    '${status}' == '200'
         ${json_response}             evaluate             json.loads('''${response.content}''')   json
         ${data}            Get From Dictionary    ${json_response}    data
@@ -54,5 +54,5 @@ Delete KPI
     [Arguments]    ${kpi_id}   ${cookie}    ${status}
     ${kpi_del_data}   Set Variable   {"ids": [${kpi_id}]}
     ${header}     Create Dictionary header    set_cookie=${cookie}
-    ${response}   DELETE On Session    alias=ORANGE    url=/web/index.php/api/v2/performance/kpis     data=${kpi_del_data}       headers=${header}   expected_status=${status}
+    ${response}   DELETE On Session    alias=ORANGE    url=/api/v2/performance/kpis     data=${kpi_del_data}       headers=${header}   expected_status=${status}
     Log To Console     KPI ID Deleted: ${kpi_id}

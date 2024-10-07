@@ -23,9 +23,9 @@ Login With Authentication
     ...    
     ...    Author: Gabriel Martins
     Delete All Sessions
-    Create Session    alias=ORANGE   url=https://opensource-demo.orangehrmlive.com/
+    Create Session    alias=ORANGE   url=https://opensource-demo.orangehrmlive.com/web/index.php
 
-    ${response}   GET On Session      alias=ORANGE   url=web/index.php/auth/login    expected_status=200
+    ${response}   GET On Session      alias=ORANGE   url=/auth/login    expected_status=200
 
     ${csrf_token_right}    Fetch From Right    ${response.text}           ${csrf_token_start}
     ${csrf_token}          Fetch From Left     ${csrf_token_right}        ${csrf_token_end}
@@ -43,7 +43,7 @@ Login With Authentication
     ${data}=    Set Variable    {"_token": "${csrf_token}", "username": ${username}, "password": ${password}}
     ${json_data}=     Convert String To Json    ${data}
 
-    ${resp}   POST On Session    alias=ORANGE    url=web/index.php/auth/validate     data=${json_data}     headers=${header}    expected_status=200
+    ${resp}   POST On Session    alias=ORANGE    url=/auth/validate     data=${json_data}     headers=${header}    expected_status=200
     Return From Keyword      ${cookie_header}
 
 Create Dictionary header

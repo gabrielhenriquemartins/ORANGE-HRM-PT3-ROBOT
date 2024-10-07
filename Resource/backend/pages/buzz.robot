@@ -14,7 +14,7 @@ Add Post
     [Arguments]   ${cookie}    ${status}   ${type}   ${text}
     ${buzz_form_data}   Set Variable   {"type": "${type}", "text": "${text}"}
     ${header}     Create Dictionary header    set_cookie=${cookie}
-    ${response}   POST On Session    alias=ORANGE    url=/web/index.php/api/v2/buzz/posts     data=${buzz_form_data}       headers=${header}    expected_status=${status}
+    ${response}   POST On Session    alias=ORANGE    url=/api/v2/buzz/posts     data=${buzz_form_data}       headers=${header}    expected_status=${status}
     IF    '${status}' == '200'
         ${json_response}             evaluate             json.loads('''${response.content}''')   json
         ${data}            Get From Dictionary    ${json_response}    data
@@ -35,5 +35,5 @@ Delete Post
     [Arguments]    ${post_id}   ${cookie}    ${status}
     ${header}     Create Dictionary header    set_cookie=${cookie}
     ${body}       Set Variable         {"id": ${post_id}}
-    ${response}   DELETE On Session    alias=ORANGE    url=/web/index.php/api/v2/buzz/shares/${post_id}   data=${body}   headers=${header}   expected_status=${status}
+    ${response}   DELETE On Session    alias=ORANGE    url=/api/v2/buzz/shares/${post_id}   data=${body}   headers=${header}   expected_status=${status}
     Log To Console     Post ID Deleted: ${post_id}

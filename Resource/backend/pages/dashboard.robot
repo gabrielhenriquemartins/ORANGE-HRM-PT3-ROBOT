@@ -16,7 +16,7 @@ Get Dashboards
     ${date}    set Variable    ${current_time}[0:10]
     ${time}    set Variable    ${current_time}[11:16]
     ${header}     Create Dictionary header    set_cookie=${cookie}
-    ${response}   GET On Session    alias=ORANGE    url=/web/index.php/api/v2/dashboard/employees/time-at-work?timezoneOffset=-3&currentDate=${date}&currentTime=${time}      headers=${header}    expected_status=${status}
+    ${response}   GET On Session    alias=ORANGE    url=/api/v2/dashboard/employees/time-at-work?timezoneOffset=-3&currentDate=${date}&currentTime=${time}      headers=${header}    expected_status=${status}
     IF    '${status}' == '200'
         ${json_response}             evaluate             json.loads('''${response.content}''')   json
         Should Not Be Empty    ${json_response}

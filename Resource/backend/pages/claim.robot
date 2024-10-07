@@ -14,7 +14,7 @@ Add Expense Type
     [Arguments]   ${cookie}    ${status}   ${name}   ${description}    ${expense_status}
     ${claim_form_data}   Set Variable   {"name": "${name}", "description": "${description}", "status": ${expense_status}}
     ${header}     Create Dictionary header    set_cookie=${cookie}
-    ${response}   POST On Session    alias=ORANGE    url=/web/index.php/api/v2/claim/expenses/types     data=${claim_form_data}       headers=${header}    expected_status=${status}
+    ${response}   POST On Session    alias=ORANGE    url=/api/v2/claim/expenses/types     data=${claim_form_data}       headers=${header}    expected_status=${status}
     IF    '${status}' == '200'
         ${json_response}             evaluate             json.loads('''${response.content}''')   json
         ${data}            Get From Dictionary    ${json_response}    data
@@ -34,5 +34,5 @@ Delete Expense Type
     [Arguments]   ${expense_id}   ${cookie}    ${status}
     ${header}     Create Dictionary header    set_cookie=${cookie}
     ${expense_type_del_data}      Set Variable   {"ids": [${expense_id}]}
-    ${response}   DELETE On Session    alias=ORANGE    url=/web/index.php/api/v2/claim/expenses/types   data=${expense_type_del_data}   headers=${header}   expected_status=${status}
+    ${response}   DELETE On Session    alias=ORANGE    url=/api/v2/claim/expenses/types   data=${expense_type_del_data}   headers=${header}   expected_status=${status}
     Log To Console     Expense Type ID Deleted: ${expense_id}

@@ -12,7 +12,7 @@ Get Personal Details
     ...    Author: Gabriel Martins
     [Arguments]   ${cookie}    ${status}
     ${header}     Create Dictionary header    set_cookie=${cookie}
-    ${response}   GET On Session    alias=ORANGE    url=/web/index.php/api/v2/pim/employees/7/personal-details      headers=${header}    expected_status=${status}
+    ${response}   GET On Session    alias=ORANGE    url=/api/v2/pim/employees/7/personal-details      headers=${header}    expected_status=${status}
     IF    '${status}' == '200'
         ${json_response}             evaluate             json.loads('''${response.content}''')   json
         Should Not Be Empty    ${json_response}

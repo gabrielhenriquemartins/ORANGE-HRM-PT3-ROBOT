@@ -15,7 +15,7 @@ Get All Punch In Punch Out
     ${current_time}    Get Current Date	   UTC	 - 3 hours
     ${date}    set Variable    ${current_time}[0:10]
     ${header}     Create Dictionary header    set_cookie=${cookie}
-    ${response}   GET On Session    alias=ORANGE    url=/web/index.php/api/v2/attendance/records?limit=50&offset=0&date=${date}     headers=${header}    expected_status=${status}
+    ${response}   GET On Session    alias=ORANGE    url=/api/v2/attendance/records?limit=50&offset=0&date=${date}     headers=${header}    expected_status=${status}
     IF    '${status}' == '200'
         ${json_response}             evaluate             json.loads('''${response.content}''')   json
         ${data}    Get From Dictionary    ${json_response}    data
@@ -39,7 +39,7 @@ Delete Punch
     [Arguments]    ${punch_ids}   ${cookie}    ${status}
     ${header}     Create Dictionary header   set_cookie=${cookie}
     ${punch_del_data}   Set Variable   {"ids": [${punch_ids}]}
-    ${response}   DELETE On Session    alias=ORANGE    url=/web/index.php/api/v2/attendance/records   data=${punch_del_data}   headers=${header}   expected_status=${status}
+    ${response}   DELETE On Session    alias=ORANGE    url=/api/v2/attendance/records   data=${punch_del_data}   headers=${header}   expected_status=${status}
     Log To Console     Punch IDs Deleted: ${punch_ids}
 
 Punch In
@@ -54,7 +54,7 @@ Punch In
     [Arguments]   ${cookie}    ${status}   ${date}   ${time}    ${note}=null    ${timezoneOffset}=-3    ${timezoneName}=America/Sao_Paulo
     ${punch_in_form_data}   Set Variable   {"date": "${date}", "time": "${time}", "note": ${note}, "timezoneOffset": ${timezoneOffset}, "timezoneName": "${timezoneName}"}
     ${header}     Create Dictionary header    set_cookie=${cookie}
-    ${response}   POST On Session    alias=ORANGE    url=/web/index.php/api/v2/attendance/records     data=${punch_in_form_data}       headers=${header}    expected_status=${status}
+    ${response}   POST On Session    alias=ORANGE    url=/api/v2/attendance/records     data=${punch_in_form_data}       headers=${header}    expected_status=${status}
     IF    '${status}' == '200'
         ${json_response}             evaluate             json.loads('''${response.content}''')   json
         Should Not Be Empty    ${json_response}
@@ -72,7 +72,25 @@ Punch Out
     [Arguments]   ${cookie}    ${status}   ${date}   ${time}    ${note}=null    ${timezoneOffset}=-3    ${timezoneName}=America/Sao_Paulo
     ${punch_in_form_data}   Set Variable   {"date": "${date}", "time": "${time}", "note": ${note}, "timezoneOffset": ${timezoneOffset}, "timezoneName": "${timezoneName}"}
     ${header}     Create Dictionary header    set_cookie=${cookie}
-    ${response}   PUT On Session    alias=ORANGE    url=/web/index.php/api/v2/attendance/records     data=${punch_in_form_data}       headers=${header}    expected_status=${status}
+    ${response}   PUT On Session    alias=ORANGE    url=/api/v2/attendance/records     data=${punch_in_form_data}       headers=${header}    expected_status=${status}
+    IF    '${status}' == '200'
+        ${json_response}             evaluate             json.loads('''${response.content}''')   json
+        Should Not Be Empty    ${json_response}
+    END
+
+Attendance Configuration
+    [Documentation]    This keywords configure the user attendance
+    ...    
+    ...    This keyword allows the user to manipulate the attendance.
+    ...    
+    ...    Example:
+    ...    | Attendance Configuration   |     cookie=cookie   |
+    ...    
+    ...    Autor: Gabriel Martins
+    [Arguments]   ${cookie}    ${status}
+    ${punch_in_form_data}   Set Variable   {"canUserChangeCurrentTime": true, "canUserModifyAttendance": true, "canSupervisorModifyAttendance": true}
+    ${header}     Create Dictionary header    set_cookie=${cookie}
+    ${response}   PUT On Session    alias=ORANGE    url=/api/v2/attendance/configs     data=${punch_in_form_data}       headers=${header}    expected_status=${status}
     IF    '${status}' == '200'
         ${json_response}             evaluate             json.loads('''${response.content}''')   json
         Should Not Be Empty    ${json_response}
